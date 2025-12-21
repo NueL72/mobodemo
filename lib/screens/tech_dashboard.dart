@@ -2,6 +2,8 @@ import 'package:flutter/material.dart'; // THIS WAS MISSING
 import '../core/constants.dart';
 
 class TechDashboard extends StatefulWidget {
+  const TechDashboard({super.key});
+
   @override
   _TechDashboardState createState() => _TechDashboardState();
 }

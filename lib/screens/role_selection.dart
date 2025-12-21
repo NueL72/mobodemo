@@ -3,6 +3,8 @@ import '../core/constants.dart';       // This links your colors
   // ... rest of your code
 
 class RoleSelectionScreen extends StatelessWidget {
+  const RoleSelectionScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,8 +15,15 @@ class RoleSelectionScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Logo Placeholder
-            Icon(Icons.shield, size: 80, color: AppColors.primaryNavy),
-            SizedBox(height: 10),
+           Padding(
+                padding: const EdgeInsets.only(top: 40.0, bottom: 10.0),
+                child: Image.asset(
+                  'assets/icon/bgno.png', 
+                  height: 150,           // You can increase or decrease this
+                  width: 150,            // Keeping it square usually looks best for shield logos
+                  fit: BoxFit.contain,    // This ensures the logo isn't cropped
+                ),
+              ),
             Text("RepairLocate", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: AppColors.primaryNavy)),
             SizedBox(height: 40),
             
