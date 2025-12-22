@@ -1,9 +1,6 @@
-
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 
-void main() => runApp(RepairApp());
+void main() => runApp(const RepairApp());
 
 class RepairApp extends StatelessWidget {
   const RepairApp({super.key});
@@ -11,17 +8,92 @@ class RepairApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
-      home: RepairBookingPage(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
+      ),
+      home: const MainNavigationWrapper(),
     );
   }
 }
 
+// THIS IS THE NEW PARENT WIDGET
+class MainNavigationWrapper extends StatefulWidget {
+  const MainNavigationWrapper({super.key});
+
+  @override
+  State<MainNavigationWrapper> createState() => _MainNavigationWrapperState();
+}
+
+class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
+  int _currentIndex = 0;
+
+  // List of pages for the tabs
+  final List<Widget> _pages = [
+    const RepairBookingPage(), // Your existing code
+    const Center(child: Text("Technician Screen")),
+    const Center(child: Text("Feed Screen")),
+    const Center(child: Text("Cart Screen")),
+    const Center(child: Text("Account Screen")),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // IndexedStack keeps the state of your booking flow alive when you switch tabs
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages,
+      ),
+      
+      // FLOATING BOTTOM NAVIGATION BAR
+      bottomNavigationBar: Container(
+        margin: const EdgeInsets.all(20), // Creates the floating effect
+        height: 70,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(30),
+          child: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            onTap: (index) => setState(() => _currentIndex = index),
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.white,
+            selectedItemColor: Colors.blueAccent,
+            unselectedItemColor: Colors.grey,
+            showSelectedLabels: true,
+            showUnselectedLabels: false,
+            elevation: 0, // Removed because Container handles shadow
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+              BottomNavigationBarItem(icon: Icon(Icons.build), label: "Tech"),
+              BottomNavigationBarItem(icon: Icon(Icons.rss_feed), label: "Feed"),
+              BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "Cart"),
+              BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// YOUR ORIGINAL CODE (Slightly cleaned up for the new structure)
 class RepairBookingPage extends StatefulWidget {
   const RepairBookingPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _RepairBookingPageState createState() => _RepairBookingPageState();
 }
 
@@ -33,7 +105,7 @@ class _RepairBookingPageState extends State<RepairBookingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Book a Repair")),
+      appBar: AppBar(title: const Text("Book a Repair"), centerTitle: true),
       body: Stepper(
         type: StepperType.horizontal,
         currentStep: _currentStep,
@@ -44,9 +116,8 @@ class _RepairBookingPageState extends State<RepairBookingPage> {
           if (_currentStep > 0) setState(() => _currentStep -= 1);
         },
         steps: [
-          // STEP 1: DEVICE SELECTION
           Step(
-            title: Text("Device"),
+            title: const Text("Device"),
             isActive: _currentStep >= 0,
             content: Column(
               children: [
@@ -56,47 +127,45 @@ class _RepairBookingPageState extends State<RepairBookingPage> {
               ],
             ),
           ),
-          // STEP 2: ISSUE & PHOTO
           Step(
-            title: Text("Issue"),
+            title: const Text("Issue"),
             isActive: _currentStep >= 1,
             content: Column(
               children: [
                 DropdownButton<String>(
                   isExpanded: true,
-                  hint: Text("Select Issue"),
+                  hint: const Text("Select Issue"),
                   value: selectedIssue,
                   items: ["Broken Screen", "Battery Replacement", "Water Damage"]
                       .map((label) => DropdownMenuItem(value: label, child: Text(label)))
                       .toList(),
                   onChanged: (val) => setState(() => selectedIssue = val),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton.icon(
-                  onPressed: () {}, // Trigger Image Picker
-                  icon: Icon(Icons.camera_alt),
-                  label: Text("Upload Damage Photos"),
+                  onPressed: () {},
+                  icon: const Icon(Icons.camera_alt),
+                  label: const Text("Upload Damage Photos"),
                 ),
               ],
             ),
           ),
-          // STEP 3: ESTIMATE & TRACKING
           Step(
-            title: Text("Confirm"),
+            title: const Text("Confirm"),
             isActive: _currentStep >= 2,
             content: Column(
               children: [
                 Card(
                   color: Colors.blue.shade50,
-                  child: Padding(
+                  child: const Padding(
                     padding: EdgeInsets.all(16),
                     child: Text("Estimated Price: \$150.00", 
                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   ),
                 ),
-                SizedBox(height: 20),
-                Text("Repair Progress:"),
-                _buildTrackingIndicator(2), // Mocking 'Repairing' stage
+                const SizedBox(height: 20),
+                const Text("Repair Progress:"),
+                _buildTrackingIndicator(2),
               ],
             ),
           ),
@@ -111,9 +180,7 @@ class _RepairBookingPageState extends State<RepairBookingPage> {
       title: Text(title),
       trailing: Radio<String>(
         value: title,
-        // ignore: deprecated_member_use
         groupValue: selectedDevice,
-        // ignore: deprecated_member_use
         onChanged: (val) => setState(() => selectedDevice = val),
       ),
     );
@@ -128,11 +195,11 @@ class _RepairBookingPageState extends State<RepairBookingPage> {
         return Column(
           children: [
             CircleAvatar(
-              radius: 15,
+              radius: 12,
               backgroundColor: isDone ? Colors.green : Colors.grey.shade300,
-              child: Icon(Icons.check, size: 15, color: Colors.white),
+              child: const Icon(Icons.check, size: 12, color: Colors.white),
             ),
-            Text(entry.value, style: TextStyle(fontSize: 10)),
+            Text(entry.value, style: const TextStyle(fontSize: 10)),
           ],
         );
       }).toList(),
