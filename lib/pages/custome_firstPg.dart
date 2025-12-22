@@ -1,4 +1,7 @@
+// ignore_for_file: library_private_types_in_public_api
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 void main() => runApp(const RepairApp());
 
@@ -18,7 +21,6 @@ class RepairApp extends StatelessWidget {
   }
 }
 
-// THIS IS THE NEW PARENT WIDGET
 class MainNavigationWrapper extends StatefulWidget {
   const MainNavigationWrapper({super.key});
 
@@ -29,9 +31,8 @@ class MainNavigationWrapper extends StatefulWidget {
 class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
   int _currentIndex = 0;
 
-  // List of pages for the tabs
   final List<Widget> _pages = [
-    const RepairBookingPage(), // Your existing code
+    const RepairBookingPage(),
     const Center(child: Text("Technician Screen")),
     const Center(child: Text("Feed Screen")),
     const Center(child: Text("Cart Screen")),
@@ -41,15 +42,12 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // IndexedStack keeps the state of your booking flow alive when you switch tabs
       body: IndexedStack(
         index: _currentIndex,
         children: _pages,
       ),
-      
-      // FLOATING BOTTOM NAVIGATION BAR
       bottomNavigationBar: Container(
-        margin: const EdgeInsets.all(20), // Creates the floating effect
+        margin: const EdgeInsets.all(20),
         height: 70,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -69,12 +67,8 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
             currentIndex: _currentIndex,
             onTap: (index) => setState(() => _currentIndex = index),
             type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.white,
             selectedItemColor: Colors.blueAccent,
             unselectedItemColor: Colors.grey,
-            showSelectedLabels: true,
-            showUnselectedLabels: false,
-            elevation: 0, // Removed because Container handles shadow
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
               BottomNavigationBarItem(icon: Icon(Icons.build), label: "Tech"),
@@ -89,7 +83,6 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
   }
 }
 
-// YOUR ORIGINAL CODE (Slightly cleaned up for the new structure)
 class RepairBookingPage extends StatefulWidget {
   const RepairBookingPage({super.key});
 
@@ -101,6 +94,55 @@ class _RepairBookingPageState extends State<RepairBookingPage> {
   int _currentStep = 0;
   String? selectedDevice;
   String? selectedIssue;
+  File? _imageFile;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Select Image Source',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library, color: Colors.blue),
+                title: const Text('Photo Gallery'),
+                onTap: () async {
+                  Navigator.pop(context); // Close the menu
+                  final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+                  if (pickedFile != null) {
+                    setState(() => _imageFile = File(pickedFile.path));
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt, color: Colors.green),
+                title: const Text('Camera'),
+                onTap: () async {
+                  Navigator.pop(context); // Close the menu
+                  final XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
+                  if (pickedFile != null) {
+                    setState(() => _imageFile = File(pickedFile.path));
+                  }
+                },
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,8 +184,13 @@ class _RepairBookingPageState extends State<RepairBookingPage> {
                   onChanged: (val) => setState(() => selectedIssue = val),
                 ),
                 const SizedBox(height: 20),
+                if (_imageFile != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Image.file(_imageFile!, height: 100),
+                  ),
                 ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: _pickImage,
                   icon: const Icon(Icons.camera_alt),
                   label: const Text("Upload Damage Photos"),
                 ),
@@ -164,7 +211,6 @@ class _RepairBookingPageState extends State<RepairBookingPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text("Repair Progress:"),
                 _buildTrackingIndicator(2),
               ],
             ),
