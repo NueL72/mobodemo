@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobowiza/pages/custome_firstPg.dart';
+import 'package:mobowiza/screens/tech_dashboard.dart';
 import '../core/constants.dart'; // Your colors
-import '../pages/customer_page.dart'; // Import the page you created
+// import '../pages/customer_page.dart'; // Import the page you created
 
 class RoleSelectionScreen extends StatelessWidget {
   const RoleSelectionScreen({super.key});
@@ -44,7 +46,7 @@ class RoleSelectionScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => const CustomerPage(),
+                    builder: (_) => const RepairApp(),
                   ),
                 );
               },
@@ -58,7 +60,12 @@ class RoleSelectionScreen extends StatelessWidget {
               icon: Icons.build_rounded,
               onTap: () {
                 // Replace with Technician dashboard navigation later
-                print("Navigate to Tech Dashboard");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const TechDashboard(),
+                  ),
+                );
               },
             ),
           ],
