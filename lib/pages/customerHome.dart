@@ -43,10 +43,18 @@ class FixerApp extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const CircleAvatar(
-          backgroundColor: Color(0xFF4A78D0),
-          child: Icon(Icons.close, color: Colors.white),
-        ),
+        // const CircleAvatar(
+          // backgroundColor: Color(0xFF4A78D0),
+           Padding(
+              padding: const EdgeInsets.only(top: 0, bottom: 0),
+              child: Image.asset(
+                'assets/icon/bgno.png',
+                height: 150,
+                width: 150,
+                fit: BoxFit.contain,
+              ),
+            ),
+        // ),
         CircleAvatar(
           backgroundColor: Colors.grey[200],
           child: const Icon(Icons.person, color: Colors.black54),
