@@ -2,7 +2,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
+import '../pages/AccountProfile.dart';
 void main() => runApp(const RepairApp());
 
 class RepairApp extends StatelessWidget {
@@ -36,7 +36,7 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
     const Center(child: Text("Technician Screen")),
     const Center(child: Text("Feed Screen")),
     const Center(child: Text("Cart Screen")),
-    const Center(child: Text("Account Screen")),
+    const ProfileScreen(),
   ];
 
   @override
