@@ -28,25 +28,21 @@ class RepairSignUpScreen extends StatefulWidget {
 }
 
 class _RepairSignUpScreenState extends State<RepairSignUpScreen> {
-  int _selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // The bottomNavigationBar property has been removed from here
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
           child: Column(
             children: [
-              // Header Title
               const Text(
                 "Join the world's largest repair community",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 25),
-
-              // Feature List section
               const _FeatureRow(
                 icon: Icons.build_outlined,
                 text: "Learn from 2.5 million like-minded fixers",
@@ -59,10 +55,7 @@ class _RepairSignUpScreenState extends State<RepairSignUpScreen> {
                 icon: Icons.wb_sunny_outlined,
                 text: "Participate to earn reputation and help fix the world",
               ),
-              
               const SizedBox(height: 30),
-
-              // Account Status / Login link
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -77,8 +70,6 @@ class _RepairSignUpScreenState extends State<RepairSignUpScreen> {
                 ],
               ),
               const SizedBox(height: 15),
-
-              // The Main Card Container
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -96,31 +87,24 @@ class _RepairSignUpScreenState extends State<RepairSignUpScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Google Sign up with Local Asset
                     _SocialButton(
                       label: "Sign up with Google",
                       assetPath: "assets/icon/google.png",
                     ),
                     const SizedBox(height: 12),
-                    
-                    // Facebook Sign up
                     const _SocialButton(
                       label: "Sign up with Facebook",
                       icon: Icons.facebook,
                       iconColor: Color(0xFF1877F2),
                     ),
-                    
                     const SizedBox(height: 25),
                     const _OrDivider(),
                     const SizedBox(height: 25),
-
                     const Text(
                       "Email",
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     ),
                     const SizedBox(height: 8),
-
-                    // Email Input Field
                     TextField(
                       decoration: InputDecoration(
                         hintText: "albert@domain.com",
@@ -137,10 +121,7 @@ class _RepairSignUpScreenState extends State<RepairSignUpScreen> {
                       "Enter your email address to login or sign up.",
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
-                    
                     const SizedBox(height: 25),
-
-                    // Continue Button
                     SizedBox(
                       width: double.infinity,
                       height: 50,
@@ -164,26 +145,11 @@ class _RepairSignUpScreenState extends State<RepairSignUpScreen> {
           ),
         ),
       ),
-      // Bottom Navigation Bar matching your screenshot
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) => setState(() => _selectedIndex = index),
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: const Color(0xFF0066CC),
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.android), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.storefront), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: ''),
-        ],
-      ),
     );
   }
 }
 
-// Sub-widget for the Feature items
+// Sub-widgets remain the same
 class _FeatureRow extends StatelessWidget {
   final IconData icon;
   final String text;
@@ -195,7 +161,7 @@ class _FeatureRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
-          Icon(icon, color: Colors.blue, size: 28),
+          Icon(icon, color: const Color(0xFF4A90E2), size: 28),
           const SizedBox(width: 15),
           Expanded(child: Text(text, style: const TextStyle(fontSize: 14))),
         ],
@@ -204,7 +170,6 @@ class _FeatureRow extends StatelessWidget {
   }
 }
 
-// Updated Social Button with Asset Support
 class _SocialButton extends StatelessWidget {
   final String label;
   final String? assetPath;
@@ -237,7 +202,6 @@ class _SocialButton extends StatelessWidget {
   }
 }
 
-// OR Divider sub-widget
 class _OrDivider extends StatelessWidget {
   const _OrDivider();
   @override
