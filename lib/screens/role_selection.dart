@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:mobowiza/pages/custome_firstPg.dart';
-import 'package:mobowiza/pages/customerHome.dart';
+import 'package:mobowiza/Customerpages/customerHome.dart';
 import 'package:mobowiza/screens/tech_dashboard.dart';
 import '../core/constants.dart'; // Your colors
 // import '../pages/customer_page.dart'; // Import the page you created
@@ -47,7 +47,7 @@ class RoleSelectionScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => const FixerApp(),
+                    builder: (_) => const MainNavigationWrapper(),
                   ),
                 );
               },
