@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobowiza/Customerpages/CustomerLogin.dart';
+import 'package:mobowiza/Customerpages/customerRegister.dart';
 
 void main() {
   runApp(const MaterialApp(home: ProfileScreen(), debugShowCheckedModeBanner: false));
@@ -108,7 +109,10 @@ class ProfileScreen extends StatelessWidget {
             const Color(0xFF4472C4),
             onPressed: () {
               // Navigate to Join/Signup Screen
-              print("Join button clicked");
+               Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const RepairApp()),
+              );
             },
           ),
         ],
