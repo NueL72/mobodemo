@@ -15,11 +15,10 @@ class TechnicianRegisterScreen extends StatefulWidget {
 
 class _TechnicianRegisterScreenState extends State<TechnicianRegisterScreen> {
   bool _agreedToTerms = false;
-  bool _showFormSteps = false; // Controls if we show the initial page or the steps
+  bool _showFormSteps = false;
 
   @override
   Widget build(BuildContext context) {
-    // If the user clicks register, we switch to the Multi-Step Form
     if (_showFormSteps) {
       return const BoltMultiStepRegistration();
     }
@@ -72,8 +71,7 @@ class _TechnicianRegisterScreenState extends State<TechnicianRegisterScreen> {
                   ),
                   child: Row(
                     children: [
-                      Image.network('https://flagcdn.com/w20/tz.png',
-                          width: 20),
+                      Image.network('https://flagcdn.com/w20/tz.png', width: 20),
                       const SizedBox(width: 8),
                       const Text('+255', style: TextStyle(fontSize: 16)),
                       const Icon(Icons.keyboard_arrow_down),
@@ -148,7 +146,7 @@ class _TechnicianRegisterScreenState extends State<TechnicianRegisterScreen> {
   }
 }
 
-// --- MULTI-STEP REGISTRATION FLOW (Based on your Images) ---
+// --- MULTI-STEP REGISTRATION FLOW ---
 
 class BoltMultiStepRegistration extends StatefulWidget {
   const BoltMultiStepRegistration({super.key});
@@ -161,6 +159,7 @@ class BoltMultiStepRegistration extends StatefulWidget {
 class _BoltMultiStepRegistrationState extends State<BoltMultiStepRegistration> {
   final PageController _pageController = PageController();
   int _currentStep = 0;
+  final int _totalSteps = 4;
 
   @override
   Widget build(BuildContext context) {
@@ -175,18 +174,16 @@ class _BoltMultiStepRegistrationState extends State<BoltMultiStepRegistration> {
         leading: IconButton(
           icon: const Icon(Icons.close, color: Colors.black),
           onPressed: () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const TechnicianRegisterScreen()),
+            MaterialPageRoute(
+                builder: (context) => const TechnicianRegisterScreen()),
           ),
         ),
       ),
+      // NO SHADOW: Navigation bar is now plain white to match the body
+      bottomNavigationBar: _buildBottomNavigation(),
       body: Column(
         children: [
-          // Linear Progress Indicator
-          LinearProgressIndicator(
-            value: (_currentStep + 1) / 4,
-            backgroundColor: const Color(0xFFF2F4F7),
-            color: const Color(0xFF62B384),
-          ),
+          _buildSegmentedProgressBar(),
           Expanded(
             child: PageView(
               controller: _pageController,
@@ -200,13 +197,33 @@ class _BoltMultiStepRegistrationState extends State<BoltMultiStepRegistration> {
               ],
             ),
           ),
-          _buildBottomNavigation(),
         ],
       ),
     );
   }
 
-  // UI for STEP 1: Personal Information
+  Widget _buildSegmentedProgressBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      child: Row(
+        children: List.generate(_totalSteps, (index) {
+          return Expanded(
+            child: Container(
+              height: 4,
+              margin: const EdgeInsets.symmetric(horizontal: 3.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: index <= _currentStep
+                    ? const Color(0xFF62B384)
+                    : const Color(0xFFF2F4F7),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
   Widget _buildPersonalInfo() {
     return ListView(
       padding: const EdgeInsets.all(24),
@@ -231,12 +248,11 @@ class _BoltMultiStepRegistrationState extends State<BoltMultiStepRegistration> {
     );
   }
 
-  // UI for STEP 2: Vehicle Details
   Widget _buildVehicleDetails() {
     return ListView(
       padding: const EdgeInsets.all(24),
       children: const [
-        Text('Vehicle Details',
+        Text('Vehicle details',
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
         SizedBox(height: 24),
         _FieldLabel(label: 'National ID *'),
@@ -251,7 +267,6 @@ class _BoltMultiStepRegistrationState extends State<BoltMultiStepRegistration> {
     );
   }
 
-  // UI for STEP 3: Documents
   Widget _buildDocuments() {
     return ListView(
       padding: const EdgeInsets.all(24),
@@ -269,7 +284,6 @@ class _BoltMultiStepRegistrationState extends State<BoltMultiStepRegistration> {
     );
   }
 
-  // UI for STEP 4: Payment Details
   Widget _buildPaymentDetails() {
     return ListView(
       padding: const EdgeInsets.all(24),
@@ -300,16 +314,19 @@ class _BoltMultiStepRegistrationState extends State<BoltMultiStepRegistration> {
         children: [
           _FieldLabel(label: title),
           Text(subtitle, style: const TextStyle(color: Colors.grey, fontSize: 13)),
-          const SizedBox(height: 10),
-          ElevatedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.add, size: 18),
-            label: const Text("Upload file"),
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.black,
-              backgroundColor: const Color(0xFFF2F4F7),
-              elevation: 0,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          const SizedBox(height: 12),
+          SizedBox(
+            width: 150,
+            child: ElevatedButton.icon(
+              onPressed: () {},
+              icon: const Icon(Icons.add, size: 18),
+              label: const Text("Upload file"),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black,
+                backgroundColor: const Color(0xFFF2F4F7),
+                elevation: 0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              ),
             ),
           ),
           const Divider(height: 30),
@@ -319,47 +336,56 @@ class _BoltMultiStepRegistrationState extends State<BoltMultiStepRegistration> {
   }
 
   Widget _buildBottomNavigation() {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        children: [
-          if (_currentStep > 0)
-            Expanded(
-              child: TextButton(
-                onPressed: () => _pageController.previousPage(
-                    duration: const Duration(milliseconds: 300), curve: Curves.easeInOut),
-                child: const Text("Back", style: TextStyle(color: Colors.grey, fontSize: 16)),
-              ),
-            ),
-          Expanded(
-            flex: 2,
-            child: SizedBox(
-              height: 55,
-              child: ElevatedButton(
-                onPressed: () {
-                  if (_currentStep < 3) {
-                    _pageController.nextPage(
-                        duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
-                  } else {
-                    // Final Submit logic
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF62B384),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+    return SafeArea(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          // BoxShadow removed here
+        ),
+        child: Row(
+          children: [
+            if (_currentStep > 0)
+              Expanded(
+                flex: 1,
+                child: TextButton(
+                  onPressed: () => _pageController.previousPage(
+                      duration: const Duration(milliseconds: 300), curve: Curves.easeInOut),
+                  child: const Text("Back", style: TextStyle(color: Colors.black54, fontSize: 16)),
                 ),
-                child: Text(_currentStep == 3 ? "Submit" : "Next",
-                    style: const TextStyle(color: Colors.white, fontSize: 18)),
+              ),
+            if (_currentStep > 0) const SizedBox(width: 15),
+            Expanded(
+              flex: 2,
+              child: SizedBox(
+                height: 55,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_currentStep < _totalSteps - 1) {
+                      _pageController.nextPage(
+                          duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                    } else {
+                      // Final Submit logic
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF62B384),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                    elevation: 0,
+                  ),
+                  child: Text(_currentStep == _totalSteps - 1 ? "Submit" : "Next",
+                      style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
-// --- SHARED REUSABLE COMPONENTS ---
+// --- SHARED COMPONENTS ---
 
 class _FieldLabel extends StatelessWidget {
   final String label;
