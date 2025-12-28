@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobowiza/technicianpages/techLogin.dart';
-import '../Customerpages/customerRegister.dart';
+// import '../Customerpages/customerRegister.dart';
+import '../technicianpages/techRegister.dart';
 
 void main() => runApp(const MaterialApp(home: BoltLandingScreen()));
 
@@ -90,7 +91,7 @@ class BoltLandingScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const RepairApp()),
+                        MaterialPageRoute(builder: (context) => const TechnicianRegisterScreen()),
                         );
                       },
                       style: ElevatedButton.styleFrom(

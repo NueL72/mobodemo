@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobowiza/technicianpages/techRegister.dart';
 
 void main() {
   runApp(const Techlogin());
@@ -40,7 +41,12 @@ class SignInPage extends StatelessWidget {
                 children: [
                   const Text("New? "),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const TechnicianRegisterScreen()),
+                      );
+                    },
                     child: const Text(
                       "Join us.",
                       style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500),
