@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../Customerpages/CustomerLogin.dart';
+import 'package:mobowiza/technicianpages/techLogin.dart';
 import '../Customerpages/customerRegister.dart';
 
 void main() => runApp(const MaterialApp(home: BoltLandingScreen()));
@@ -57,7 +56,8 @@ class BoltLandingScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white70, fontSize: 16),
                   ),
-                  const Spacer(),
+                  // const Spacer(),
+                  const SizedBox(height: 20),
 
 
                   // Sign In Button
@@ -68,7 +68,7 @@ class BoltLandingScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const MyApp()),
+                        MaterialPageRoute(builder: (context) => const Techlogin()),
                         );
                       },
                       style: ElevatedButton.styleFrom(
