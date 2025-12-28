@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobowiza/Customerpages/customer_page.dart';
+import 'package:mobowiza/Customerpages/customerLoc.dart';
 import 'AccountProfile.dart';
 
 void main() => runApp(const MaterialApp(
@@ -20,9 +20,9 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
 
   final List<Widget> _pages = [
     const RepairBookingPage(),
-    const Center(child: Text("Technician Screen")),
+    // const Center(child: Text("Technician Screen")),
     const CustomerPage(),
-    const Center(child: Text("Cart Screen")),
+    // const Center(child: Text("Cart Screen")),
     const ProfileScreen(),
   ];
 
@@ -60,9 +60,9 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
             showUnselectedLabels: true,
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-              BottomNavigationBarItem(icon: Icon(Icons.build), label: "Tech"),
+              // BottomNavigationBarItem(icon: Icon(Icons.build), label: "Tech"),
               BottomNavigationBarItem(icon: Icon(Icons.rss_feed), label: "Feed"),
-              BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "Cart"),
+              // BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "Cart"),
               BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
             ],
           ),
