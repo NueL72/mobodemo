@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const MaterialApp(home: TechnicianRegisterScreen()));
+void main() => runApp(const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: TechnicianRegisterScreen(),
+    ));
 
 class TechnicianRegisterScreen extends StatefulWidget {
   const TechnicianRegisterScreen({super.key});
 
   @override
-  State<TechnicianRegisterScreen> createState() => _TechnicianRegisterScreenState();
+  State<TechnicianRegisterScreen> createState() =>
+      _TechnicianRegisterScreenState();
 }
 
 class _TechnicianRegisterScreenState extends State<TechnicianRegisterScreen> {
   bool _agreedToTerms = false;
+  bool _showFormSteps = false; // Controls if we show the initial page or the steps
 
   @override
   Widget build(BuildContext context) {
+    // If the user clicks register, we switch to the Multi-Step Form
+    if (_showFormSteps) {
+      return const BoltMultiStepRegistration();
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -24,9 +34,11 @@ class _TechnicianRegisterScreenState extends State<TechnicianRegisterScreen> {
             padding: const EdgeInsets.only(right: 16.0),
             child: Row(
               children: [
-                Image.network('https://flagcdn.com/w40/tz.png', width: 24), // Tanzania Flag
+                Image.network('https://flagcdn.com/w40/tz.png', width: 24),
                 const SizedBox(width: 8),
-                const Text('EN', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                const Text('EN',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
@@ -39,29 +51,29 @@ class _TechnicianRegisterScreenState extends State<TechnicianRegisterScreen> {
           children: [
             const Text(
               'Become a technician',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFF333E48)),
+              style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF333E48)),
             ),
             const SizedBox(height: 30),
-
-            // Email Field
             const _FieldLabel(label: 'Email'),
             const _CustomTextField(hintText: 'Enter email address'),
-
             const SizedBox(height: 20),
-
-            // Phone Number Field
             const _FieldLabel(label: 'Phone number'),
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
                   decoration: BoxDecoration(
                     color: const Color(0xFFF2F4F7),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
                     children: [
-                      Image.network('https://flagcdn.com/w20/tz.png', width: 20),
+                      Image.network('https://flagcdn.com/w20/tz.png',
+                          width: 20),
                       const SizedBox(width: 8),
                       const Text('+255', style: TextStyle(fontSize: 16)),
                       const Icon(Icons.keyboard_arrow_down),
@@ -74,19 +86,13 @@ class _TechnicianRegisterScreenState extends State<TechnicianRegisterScreen> {
                 ),
               ],
             ),
-
             const SizedBox(height: 20),
-
-            // City Field
             const _FieldLabel(label: 'City'),
             const _CustomTextField(
               hintText: 'Dar es Salaam',
               suffixIcon: Icon(Icons.keyboard_arrow_down, color: Colors.black),
             ),
-
             const SizedBox(height: 30),
-
-            // Terms and Conditions Checkbox
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -96,36 +102,42 @@ class _TechnicianRegisterScreenState extends State<TechnicianRegisterScreen> {
                   child: Checkbox(
                     value: _agreedToTerms,
                     onChanged: (val) => setState(() => _agreedToTerms = val!),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4)),
                   ),
                 ),
                 const SizedBox(width: 12),
                 const Expanded(
                   child: Text(
                     'By registering, you agree to our Terms of Service and Privacy policy. Commit to providing quality repair services on the platform.',
-                    style: TextStyle(fontSize: 13, color: Colors.grey, height: 1.4),
+                    style:
+                        TextStyle(fontSize: 13, color: Colors.grey, height: 1.4),
                   ),
                 ),
               ],
             ),
-
             const SizedBox(height: 40),
-
-            // Register Button
             SizedBox(
               width: double.infinity,
               height: 55,
               child: ElevatedButton(
-                onPressed: _agreedToTerms ? () {} : null,
+                onPressed: _agreedToTerms
+                    ? () => setState(() => _showFormSteps = true)
+                    : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF4472C4), // Muted Green
-                  disabledBackgroundColor: const Color(0xFF4472C4).withOpacity(0.5),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                  backgroundColor: const Color(0xFF62B384),
+                  disabledBackgroundColor:
+                      const Color(0xFF62B384).withOpacity(0.5),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
                   elevation: 0,
                 ),
                 child: const Text(
                   'Register as a technician',
-                  style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600),
                 ),
               ),
             ),
@@ -136,7 +148,219 @@ class _TechnicianRegisterScreenState extends State<TechnicianRegisterScreen> {
   }
 }
 
-// Reusable Label Widget
+// --- MULTI-STEP REGISTRATION FLOW (Based on your Images) ---
+
+class BoltMultiStepRegistration extends StatefulWidget {
+  const BoltMultiStepRegistration({super.key});
+
+  @override
+  State<BoltMultiStepRegistration> createState() =>
+      _BoltMultiStepRegistrationState();
+}
+
+class _BoltMultiStepRegistrationState extends State<BoltMultiStepRegistration> {
+  final PageController _pageController = PageController();
+  int _currentStep = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text("Register",
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.close, color: Colors.black),
+          onPressed: () => Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const TechnicianRegisterScreen()),
+          ),
+        ),
+      ),
+      body: Column(
+        children: [
+          // Linear Progress Indicator
+          LinearProgressIndicator(
+            value: (_currentStep + 1) / 4,
+            backgroundColor: const Color(0xFFF2F4F7),
+            color: const Color(0xFF62B384),
+          ),
+          Expanded(
+            child: PageView(
+              controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              onPageChanged: (idx) => setState(() => _currentStep = idx),
+              children: [
+                _buildPersonalInfo(),
+                _buildVehicleDetails(),
+                _buildDocuments(),
+                _buildPaymentDetails(),
+              ],
+            ),
+          ),
+          _buildBottomNavigation(),
+        ],
+      ),
+    );
+  }
+
+  // UI for STEP 1: Personal Information
+  Widget _buildPersonalInfo() {
+    return ListView(
+      padding: const EdgeInsets.all(24),
+      children: const [
+        Text('Personal information',
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+        SizedBox(height: 8),
+        Text('Only your first name and vehicle details are visible to clients.'),
+        SizedBox(height: 24),
+        _FieldLabel(label: 'First and middle name *'),
+        _CustomTextField(hintText: 'Emmanuel'),
+        SizedBox(height: 16),
+        _FieldLabel(label: 'Last name *'),
+        _CustomTextField(hintText: 'Siaga'),
+        SizedBox(height: 16),
+        _FieldLabel(label: 'Language *'),
+        _CustomTextField(
+          hintText: 'English, American',
+          suffixIcon: Icon(Icons.keyboard_arrow_down),
+        ),
+      ],
+    );
+  }
+
+  // UI for STEP 2: Vehicle Details
+  Widget _buildVehicleDetails() {
+    return ListView(
+      padding: const EdgeInsets.all(24),
+      children: const [
+        Text('Vehicle Details',
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+        SizedBox(height: 24),
+        _FieldLabel(label: 'National ID *'),
+        _CustomTextField(hintText: '38809036666'),
+        SizedBox(height: 16),
+        _FieldLabel(label: 'Driver license number *'),
+        _CustomTextField(hintText: 'AB235235'),
+        SizedBox(height: 16),
+        _FieldLabel(label: 'Vehicle owner name *'),
+        _CustomTextField(hintText: 'Enter name'),
+      ],
+    );
+  }
+
+  // UI for STEP 3: Documents
+  Widget _buildDocuments() {
+    return ListView(
+      padding: const EdgeInsets.all(24),
+      children: [
+        const Text('Documents',
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 8),
+        const Text('Scans and quality photos are accepted.'),
+        const SizedBox(height: 20),
+        _uploadSection('Picha ya dereva *', 'Ionekane vizuri na background nyeupe'),
+        _uploadSection('Leseni ya dereva *', 'Hakikisha unapaki picha inayoonekana'),
+        _uploadSection('Kitambulisho cha taifa *', 'Pakia NIDA, Mpiga kura au Passport'),
+        _uploadSection('LATRA Sticker *', 'Pakia stika halali ya LATRA'),
+      ],
+    );
+  }
+
+  // UI for STEP 4: Payment Details
+  Widget _buildPaymentDetails() {
+    return ListView(
+      padding: const EdgeInsets.all(24),
+      children: [
+        const Text('Payment details',
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 24),
+        const _FieldLabel(label: 'Address *'),
+        const _CustomTextField(hintText: 'Please input home address'),
+        const SizedBox(height: 16),
+        const _FieldLabel(label: 'Account Holder Name *'),
+        const _CustomTextField(hintText: 'Mobile money account name'),
+        const SizedBox(height: 16),
+        const _FieldLabel(label: 'Mobile money network *'),
+        const _CustomTextField(
+          hintText: 'Select network',
+          suffixIcon: Icon(Icons.keyboard_arrow_down),
+        ),
+      ],
+    );
+  }
+
+  Widget _uploadSection(String title, String subtitle) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _FieldLabel(label: title),
+          Text(subtitle, style: const TextStyle(color: Colors.grey, fontSize: 13)),
+          const SizedBox(height: 10),
+          ElevatedButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.add, size: 18),
+            label: const Text("Upload file"),
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.black,
+              backgroundColor: const Color(0xFFF2F4F7),
+              elevation: 0,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
+          ),
+          const Divider(height: 30),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomNavigation() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        children: [
+          if (_currentStep > 0)
+            Expanded(
+              child: TextButton(
+                onPressed: () => _pageController.previousPage(
+                    duration: const Duration(milliseconds: 300), curve: Curves.easeInOut),
+                child: const Text("Back", style: TextStyle(color: Colors.grey, fontSize: 16)),
+              ),
+            ),
+          Expanded(
+            flex: 2,
+            child: SizedBox(
+              height: 55,
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_currentStep < 3) {
+                    _pageController.nextPage(
+                        duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                  } else {
+                    // Final Submit logic
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF62B384),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                ),
+                child: Text(_currentStep == 3 ? "Submit" : "Next",
+                    style: const TextStyle(color: Colors.white, fontSize: 18)),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// --- SHARED REUSABLE COMPONENTS ---
+
 class _FieldLabel extends StatelessWidget {
   final String label;
   const _FieldLabel({required this.label});
@@ -147,13 +371,13 @@ class _FieldLabel extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Text(
         label,
-        style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF333E48)),
+        style: const TextStyle(
+            fontWeight: FontWeight.bold, color: Color(0xFF333E48), fontSize: 14),
       ),
     );
   }
 }
 
-// Reusable Text Field Widget
 class _CustomTextField extends StatelessWidget {
   final String hintText;
   final Widget? suffixIcon;
@@ -164,7 +388,7 @@ class _CustomTextField extends StatelessWidget {
     return TextField(
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: const TextStyle(color: Colors.grey),
+        hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
         filled: true,
         fillColor: const Color(0xFFF2F4F7),
         suffixIcon: suffixIcon,
@@ -172,7 +396,8 @@ class _CustomTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
       ),
     );
   }
