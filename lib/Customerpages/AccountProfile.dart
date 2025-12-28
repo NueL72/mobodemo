@@ -32,7 +32,7 @@ class ProfileScreen extends StatelessWidget {
               icon: Icons.public,
               label: 'Store Region',
               trailingText: 'United Stat...',
-              trailingWidget: const Text('🇺🇸', style: TextStyle(fontSize: 20)),
+              trailingWidget: const Text('🇹🇿', style: TextStyle(fontSize: 20)),
             ),
             const SizedBox(height: 16),
 
