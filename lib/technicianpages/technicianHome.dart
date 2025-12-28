@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../Customerpages/CustomerLogin.dart';
+import '../Customerpages/customerRegister.dart';
+
 void main() => runApp(const MaterialApp(home: BoltLandingScreen()));
 
 class BoltLandingScreen extends StatelessWidget {
@@ -54,16 +57,22 @@ class BoltLandingScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white70, fontSize: 16),
                   ),
-                  // const Spacer(),
-                  
+                  const Spacer(),
+
+
                   // Sign In Button
                   SizedBox(
                     width: double.infinity,
                     height: 55,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const MyApp()),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF549E6B), // Bolt Green
+                        backgroundColor: const Color(0xFF4472C4), // Bolt Green
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -78,7 +87,12 @@ class BoltLandingScreen extends StatelessWidget {
                     width: double.infinity,
                     height: 55,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const RepairApp()),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF424955), // Lighter grey
                         shape: RoundedRectangleBorder(
