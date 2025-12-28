@@ -31,7 +31,7 @@ class ProfileScreen extends StatelessWidget {
             _buildSettingsTile(
               icon: Icons.public,
               label: 'Store Region',
-              trailingText: 'United Stat...',
+              trailingText: 'Tanzania',
               trailingWidget: const Text('🇹🇿', style: TextStyle(fontSize: 20)),
             ),
             const SizedBox(height: 16),
