@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobowiza/Customerpages/CustomerLogin.dart';
+// import 'package:mobowiza/Customerpages/CustomerLogin.dart';
 import 'package:mobowiza/Customerpages/customerRegister.dart';
+import 'package:mobowiza/Customerpages/google_Signin.dart';
 
 void main() {
   runApp(const MaterialApp(home: ProfileScreen(), debugShowCheckedModeBanner: false));
@@ -95,7 +96,7 @@ class ProfileScreen extends StatelessWidget {
               // Navigate to Login Screen
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const MyApp()),
+                MaterialPageRoute(builder: (context) => LoginPage()),
               );
             },
           ),

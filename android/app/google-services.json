@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "679921037252",
+    "project_id": "mobowiza-app",
+    "storage_bucket": "mobowiza-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:679921037252:android:f583b78ce43f199eefbe91",
+        "android_client_info": {
+          "package_name": "com.example.mobodemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "679921037252-rajvpgof7ko973b92gqaoqgcpb8j05p0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mobodemo",
+            "certificate_hash": "c2cbdb89921903020ad8bdb44c12328ad648d825"
+          }
+        },
+        {
+          "client_id": "679921037252-fmucjc6eiepg9s0r1anubu4cfdl4gaeu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC98DXwk8RgM14mIeQJiPL0Trx6CCh9Xfc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "679921037252-fmucjc6eiepg9s0r1anubu4cfdl4gaeu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
