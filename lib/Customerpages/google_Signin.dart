@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+// import 'package:mobowiza/Customerpages/custome_firstPg.dart';
+import 'package:mobowiza/Customerpages/customerAccount.dart';
 import 'auth_service.dart'; // Import the service created above
 
 class LoginPage extends StatelessWidget {
@@ -23,6 +25,10 @@ class LoginPage extends StatelessWidget {
             final user = await _authService.signInWithGoogle();
             if (user != null) {
               print("Signed in: ${user.user?.displayName}");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage()),
+              );
               // Navigate to your Home Screen here
             }
           },
