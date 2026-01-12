@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobowiza/Customerpages/CustomerLogin.dart';
 // import 'package:mobowiza/Customerpages/CustomerLogin.dart';
-import 'package:mobowiza/Customerpages/customerRegister.dart';
+// import 'package:mobowiza/Customerpages/customerRegister.dart';
 // import 'package:mobowiza/Customerpages/google_Signin.dart';
 // import 'package:mobowiza/technicianpages/techLogin.dart';
 
@@ -91,7 +91,7 @@ class ProfileScreen extends StatelessWidget {
           
           // Log In Button Action
           _buildButton(
-            'Log In', 
+            'Join', 
             const Color(0xFF4472C4), 
             Colors.white, 
             onPressed: () {
@@ -103,21 +103,6 @@ class ProfileScreen extends StatelessWidget {
             },
           ),
           
-          const SizedBox(height: 10),
-          
-          // Join Button Action
-          _buildButton(
-            'Join', 
-            const Color(0xFFD9E1F2), 
-            const Color(0xFF4472C4),
-            onPressed: () {
-              // Navigate to Join/Signup Screen
-               Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const RepairApp()),
-              );
-            },
-          ),
         ],
       ),
     );
