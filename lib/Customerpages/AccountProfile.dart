@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mobowiza/Customerpages/CustomerLogin.dart';
 // import 'package:mobowiza/Customerpages/CustomerLogin.dart';
 import 'package:mobowiza/Customerpages/customerRegister.dart';
-import 'package:mobowiza/Customerpages/google_Signin.dart';
+// import 'package:mobowiza/Customerpages/google_Signin.dart';
+// import 'package:mobowiza/technicianpages/techLogin.dart';
 
 void main() {
   runApp(const MaterialApp(home: ProfileScreen(), debugShowCheckedModeBanner: false));

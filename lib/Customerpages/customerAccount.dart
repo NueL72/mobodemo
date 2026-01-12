@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-void main() => runApp(const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: ProfilePage(),
-    ));
+// I removed the main() and MaterialApp here so you can integrate it into your app easily.
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  // NEW: Added this to accept the Google account data
+  final GoogleSignInAccount user; 
+
+  const ProfilePage({super.key, required this.user});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -31,29 +32,37 @@ class _ProfilePageState extends State<ProfilePage> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [
           const SizedBox(height: 20),
-          // --- Profile Header ---
+          // --- Profile Header (Modified ONLY the data lines) ---
           Row(
             children: [
               CircleAvatar(
                 radius: 30,
                 backgroundColor: Colors.blue.shade900,
-                child: const Text('E',
-                    style: TextStyle(color: Colors.white, fontSize: 24)),
+                // NEW: Added the Google Profile Photo logic
+                backgroundImage: widget.user.photoUrl != null 
+                    ? NetworkImage(widget.user.photoUrl!) 
+                    : null,
+                child: widget.user.photoUrl == null 
+                    ? Text(widget.user.displayName?[0] ?? '?', 
+                        style: const TextStyle(color: Colors.white, fontSize: 24))
+                    : null,
               ),
               const SizedBox(width: 15),
-              const Column(
+              Column( // Removed 'const' here to allow dynamic data
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Emmanuel Paul',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  Text('@emmanuelpaul', style: TextStyle(color: Colors.grey)),
+                  // NEW: Using actual Name from Google
+                  Text(widget.user.displayName ?? "No Name",
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  // NEW: Using actual Email from Google
+                  Text(widget.user.email, style: const TextStyle(color: Colors.grey)),
                 ],
               )
             ],
           ),
           const SizedBox(height: 30),
 
-          // --- Menu Items ---
+          // --- Menu Items (Exactly as provided) ---
           _buildMenuItem(Icons.public, "Store Region",
               trailingText: "United Stat...", trailingIcon: Icons.flag),
           _buildMenuItem(Icons.translate, "Language",
@@ -66,7 +75,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
           const SizedBox(height: 25),
 
-          // --- My Devices Header ---
+          // --- My Devices Header (Exactly as provided) ---
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -90,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
 
-          // --- Device Cards ---
+          // --- Device Cards (Exactly as provided) ---
           Row(
             children: [
               _buildDeviceCard(Icons.add, "Add new", isAdd: true),
@@ -98,11 +107,11 @@ class _ProfilePageState extends State<ProfilePage> {
               _buildDeviceCard(null, "Product Details"),
             ],
           ),
-          const SizedBox(height: 120), // Extra space so Nav Bar doesn't hide content
+          const SizedBox(height: 120), 
         ],
       ),
 
-      // --- UPDATED BOTTOM NAVIGATION BAR ---
+      // --- BOTTOM NAVIGATION BAR (Exactly as provided) ---
       bottomNavigationBar: Container(
         margin: const EdgeInsets.all(20),
         height: 70,
@@ -126,7 +135,6 @@ class _ProfilePageState extends State<ProfilePage> {
               setState(() {
                 _currentIndex = index;
               });
-              // Add navigation logic here if using this in a multi-page app
             },
             type: BottomNavigationBarType.fixed,
             selectedItemColor: Colors.blueAccent,
@@ -144,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // Helper methods
+  // Helper methods (Exactly as provided)
   Widget _buildMenuItem(IconData icon, String title,
       {String? trailingText, IconData? trailingIcon, bool isLanguage = false}) {
     return Container(
